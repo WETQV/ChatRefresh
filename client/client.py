@@ -9,6 +9,7 @@ import os
 from customtkinter import CTkTextbox
 from PIL import Image, ImageTk
 from datetime import datetime
+import random
 
 # Настройки customtkinter
 ctk.set_appearance_mode("System")  # "System" (light/dark), "Dark", "Light"
@@ -39,6 +40,24 @@ SMALL_FILE_BUFFER = 512 * 1024  # 512 KB для файлов < 1 MB
 MEDIUM_FILE_BUFFER = 1024 * 1024  # 1 MB для файлов от 1 MB до 10 MB
 LARGE_FILE_BUFFER = 2 * 1024 * 1024  # 2 MB для файлов от 10 MB до 100 MB
 HUGE_FILE_BUFFER = 4 * 1024 * 1024  # 4 MB для файлов > 100 MB
+
+# Список приветственных фраз
+WELCOME_MESSAGES = [
+    "Йоу, {}!",
+    "С возвращением, {}!",
+    "Привет, {}!",
+    "Здравствуй, {}!",
+    "Рады видеть, {}!",
+    "Приветствуем, {}!",
+    "Добро пожаловать, {}!",
+    "Хей, {}!",
+    "Салют, {}!",
+    "Здорово, {}!",
+    "Как погода, {}?",
+    "Как дела, {}?",
+    "Когда обнова, {}?",
+    "Ты тот самый {}???"
+]
 
 class App(ctk.CTk):
     def __init__(self):
@@ -426,7 +445,9 @@ class ChatFrame(ctk.CTkFrame):
     def set_nickname(self, nickname):
         """Устанавливает никнейм и запускает прием сообщений."""
         self.nickname = nickname
-        self.welcome_label.configure(text=f"Йоу, {self.nickname}!")
+        # Выбираем случайное приветствие
+        welcome_message = random.choice(WELCOME_MESSAGES).format(self.nickname)
+        self.welcome_label.configure(text=welcome_message)
         # Запускаем поток для получения сообщений
         self.receive_thread = threading.Thread(target=self.receive_messages, daemon=True)
         self.receive_thread.start()
